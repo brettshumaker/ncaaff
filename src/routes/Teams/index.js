@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import SingleTeam from 'components/SingleTeam'
 
 const Teams = () => {
-    let { id, slug } = useParams();
+    let { id } = useParams();
     return (
         <SingleTeam id={id} />
     )

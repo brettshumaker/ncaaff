@@ -14,21 +14,16 @@ const StyledHeader = styled.div`
     margin-bottom: 2em;
 `
 
-const Header = ({currentUser, children = []}) => {
+const Header = ({children}) => {
     const [navOpen, setNavOpen] = useState(false)
 
     return (
         <>
         <StyledHeader role="header">
-            <Nav open={navOpen} setOpen={setNavOpen} currentUser={currentUser} />
+            <Nav open={navOpen} setOpen={setNavOpen} />
             <Kebab open={navOpen} setOpen={setNavOpen} />
             <div>
                 <p>NCAA College Football Fantasy Football</p>
-            </div>
-            <div style={{textAlign:"right"}}>
-                {
-                    currentUser.display ? <p>Welcome, {currentUser.display}</p> : <p>Please select a user</p>
-                }
             </div>
             {children}
         </StyledHeader>

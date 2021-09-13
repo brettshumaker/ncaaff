@@ -150,25 +150,6 @@
                 }
             ],
             "season": 2021
-        },
-        {
-            "id":2,
-            "name": "TEST LEAGUE",
-            "users": [
-                {
-                    "id": 2,
-                    "roster": [
-                        324,
-                        309,
-                        23,
-                        276,
-                        145,
-                        277,
-                        2226
-                    ]
-                }
-            ],
-            "season": 2021
         }
     ],
     "seasons": [
@@ -198,8 +179,7 @@
             },
             "email": "brettshumaker@gmail.com",
             "leagues": [
-                1,
-                2
+                1
             ]
         },
         {
