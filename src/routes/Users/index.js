@@ -48,12 +48,13 @@ const Users = () => {
                     const fullUserWithLeagueData = await getUser({userID: thisUserData.id, leagueID: id})
                     
                     console.log('fullUserWithLeagueData', {...fullUserWithLeagueData})
-    
+                    
                     // Add rosterData.points too
                     rosterData.name = leagueName
                     rosterData.id = id
-                    rosterData.roster = fullUserWithLeagueData.roster.roster
+                    rosterData.roster = fullUserWithLeagueData.roster
                     rosterData.points = fullUserWithLeagueData.points
+                    console.log('rosterData2', {...rosterData})
                     return rosterData
                 }))
 
