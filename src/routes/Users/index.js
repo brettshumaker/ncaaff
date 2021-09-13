@@ -43,9 +43,11 @@ const Users = () => {
                     .shift().users.filter( user => thisUserData.id === user.id ).shift()
 
                     console.log('rosterData', {...rosterData})
-    
+                    
                     // Get all the team data here
                     const fullUserWithLeagueData = await getUser({userID: thisUserData.id, leagueID: id})
+                    
+                    console.log('fullUserWithLeagueData', {...fullUserWithLeagueData})
     
                     // Add rosterData.points too
                     rosterData.name = leagueName
