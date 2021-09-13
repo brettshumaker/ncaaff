@@ -241,6 +241,11 @@ const getUser = async ({userID, leagueID = null}) => {
 
         console.log('inside getUser user', {...user}, JSON.stringify(user.points))
 
+        // The user is likely already built out with their league data - return
+        if ( user.points ) {
+            return user
+        }
+
         return getUserLeagueRoster(userID, leagueID)
         .then( rosterPromise => rosterPromise)
         .then( roster => {
