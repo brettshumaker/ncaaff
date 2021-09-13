@@ -37,15 +37,9 @@ const isLocalStorageStale = key => {
  * Load our local json file
  */
 const getLocalJSON = async () => {
-    return await fetch('/src/data/league-data.json'
-        ,{
-        headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }})
-        .then(function(response){
-            return response.json();
-        })
+    return new Promise((resolve, reject) => {
+        resolve(require( '/src/data/league-data.json'))
+    })
 }
 
 /**
