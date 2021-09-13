@@ -1,0 +1,336 @@
+{
+    "leagues": [
+        {
+            "id": 1,
+            "name": "Urban Who?",
+            "users": [
+                {
+                    "id": 1,
+                    "roster": [
+                        324,
+                        309,
+                        23,
+                        276,
+                        145,
+                        277,
+                        202
+                    ]
+                },
+                {
+                    "id": 2,
+                    "roster": [
+                        275,
+                        87,
+                        235,
+                        2,
+                        2226,
+                        154,
+                        2711
+                    ]
+                },
+                {
+                    "id": 3,
+                    "roster": [
+                        228,
+                        2390,
+                        68,
+                        2751,
+                        2084,
+                        2005,
+                        2199
+                    ]
+                },
+                {
+                    "id": 4,
+                    "roster": [
+                        201,
+                        254,
+                        248,
+                        152,
+                        52,
+                        2653,
+                        2117
+                    ]
+                },
+                {
+                    "id": 5,
+                    "roster": [
+                        194,
+                        2649,
+                        264,
+                        221,
+                        252,
+                        62,
+                        2633
+                    ]
+                },
+                {
+                    "id": 6,
+                    "roster": [
+                        333,
+                        2335,
+                        2026,
+                        2636,
+                        2440,
+                        96,
+                        97
+                    ]
+                },
+                {
+                    "id": 7,
+                    "roster": [
+                        61,
+                        30,
+                        5,
+                        98,
+                        193,
+                        2348,
+                        2309
+                    ]
+                },
+                {
+                    "id": 8,
+                    "roster": [
+                        2483,
+                        2116,
+                        2050,
+                        2628,
+                        135,
+                        24,
+                        344
+                    ]
+                },
+                {
+                    "id": 9,
+                    "roster": [
+                        2132,
+                        251,
+                        9,
+                        103,
+                        195,
+                        120,
+                        158
+                    ]
+                },
+                {
+                    "id": 10,
+                    "roster": [
+                        153,
+                        245,
+                        213,
+                        259,
+                        2567,
+                        258,
+                        2641
+                    ]
+                },
+                {
+                    "id": 11,
+                    "roster": [
+                        66,
+                        99,
+                        2294,
+                        130,
+                        26,
+                        142,
+                        278
+                    ]
+                },
+                {
+                    "id": 12,
+                    "roster": [
+                        57,
+                        84,
+                        349,
+                        197,
+                        21,
+                        77,
+                        8
+                    ]
+                }
+            ],
+            "season": 2021
+        },
+        {
+            "id":2,
+            "name": "TEST LEAGUE",
+            "users": [
+                {
+                    "id": 2,
+                    "roster": [
+                        324,
+                        309,
+                        23,
+                        276,
+                        145,
+                        277,
+                        2226
+                    ]
+                }
+            ],
+            "season": 2021
+        }
+    ],
+    "seasons": [
+        2021
+    ],
+    "users": [
+        {
+            "id": 1,
+            "commissioner": true,
+            "name": {
+                "first": "Justin",
+                "last": "Shumaker",
+                "display": ""
+            },
+            "email": "shujd@hotmail.com",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 2,
+            "commissioner": false,
+            "name": {
+                "first": "Brett",
+                "last": "Shumaker",
+                "display": ""
+            },
+            "email": "brettshumaker@gmail.com",
+            "leagues": [
+                1,
+                2
+            ]
+        },
+        {
+            "id": 3,
+            "commissioner": false,
+            "name": {
+                "first": "Dean",
+                "last": "Kruschinski",
+                "display": ""
+            },
+            "email": "kruschinski99@gmail.com",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 4,
+            "commissioner": false,
+            "name": {
+                "first": "Alex",
+                "last": "Harpring",
+                "display": ""
+            },
+            "email": "arh0009@gmail.com",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 5,
+            "commissioner": false,
+            "name": {
+                "first": "Greg",
+                "last": "Weathers",
+                "display": ""
+            },
+            "email": "gweathers6@gmail.com",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 6,
+            "commissioner": false,
+            "name": {
+                "first": "Jeff",
+                "last": "Easto",
+                "display": ""
+            },
+            "email": "jeffrey.easto@gmail.com",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 7,
+            "commissioner": false,
+            "name": {
+                "first": "Jordan",
+                "last": "Boyd",
+                "display": ""
+            },
+            "email": "jboyd@sacredmission.life",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 8,
+            "commissioner": false,
+            "name": {
+                "first": "KC",
+                "last": "Woods",
+                "display": ""
+            },
+            "email": "kc.woods@ymail.com",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 9,
+            "commissioner": false,
+            "name": {
+                "first": "Jon",
+                "last": "Weber",
+                "display": ""
+            },
+            "email": "jondweber@gmail.com",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 10,
+            "commissioner": false,
+            "name": {
+                "first": "Tommy",
+                "last": "Bugg",
+                "display": ""
+            },
+            "email": "bugg.thomas@yahoo.com",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 11,
+            "commissioner": false,
+            "name": {
+                "first": "Blake",
+                "last": "Marko",
+                "display": ""
+            },
+            "email": "bmarko24@yahoo.com",
+            "leagues": [
+                1
+            ]
+        },
+        {
+            "id": 12,
+            "commissioner": false,
+            "name": {
+                "first": "Logan",
+                "last": "Smith",
+                "display": ""
+            },
+            "email": "logansmith0720@yahoo.com",
+            "leagues": [
+                1
+            ]
+        }
+    ]
+}
