@@ -39,7 +39,7 @@ const isLocalStorageStale = key => {
 const getLocalJSON = async () => {
     return new Promise((resolve, reject) => {
         const localData = require( '/src/data/league-data.json')
-        resolve({...localData})
+        resolve(JSON.parse(JSON.stringify(localData)))
     })
 }
 
