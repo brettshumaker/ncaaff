@@ -164,6 +164,13 @@ const SingleTeam = ( { id }) => {
         }
     }
 
+    function gameTimeInPast(gameDateString) {
+        const gameDateObj = new Date(gameDateString)
+        const nowDateObj = new Date(Date.now())
+
+        return ( gameDateObj.setHours(0,0,0,0) <= nowDateObj.setHours(0,0,0,0) )
+    }
+
     const NextGame = () => {
         const nextGameData = teamData.nextEvent.pop()
 
@@ -179,6 +186,17 @@ const SingleTeam = ( { id }) => {
         const gameTimeData = getGameTime(nextGameData.date)
         homeTeam.rank = homeTeam.curatedRank.current > 25 ? '' : homeTeam.curatedRank.current
         awayTeam.rank = awayTeam.curatedRank.current > 25 ? '' : awayTeam.curatedRank.current
+
+        const nextGameInPast = gameTimeInPast(nextGameData.date)
+
+        if ( nextGameInPast ) {
+            return (
+                <div className="next-game">
+                    <h4>Next Game:</h4>
+                    <p>Waiting on ESPN to update the next game...</p>
+                </div>
+            )
+        }
 
         return(
             <div className="next-game">
@@ -222,7 +240,7 @@ const SingleTeam = ( { id }) => {
                     <img src={teamData.logos[0].href} width="150" alt={teamData.displayName} title={teamData.displayName} />
                 </div>
                 <div>
-                    <h1>{teamData.displayName}</h1>
+                    <h1><a href={teamData.links[0].href} title={`View ${teamData.displayName} on ESPN`} target="_blank">{teamData.displayName}</a></h1>
                     <h3>{teamData.groups.conferenceData[0].shortName}{ ! teamData.groups.isConference ? ` (${teamData.groups.conferenceData.
                         filter( (conf ) => {
                             return teamData.groups.id === conf.groupId
