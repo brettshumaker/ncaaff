@@ -1,5 +1,5 @@
 const dataExpirations = {
-    'team': 60 * 60 * 24, // One day
+    'team': 60 * 60 * 2, // 2 hours
     'currentUser': 60 * 60 * 24 * 5 // 5 days
 }
 
