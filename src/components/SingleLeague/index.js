@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { getLeague, getUser, getUserDisplayName, getTeamData, getRankedLeagueUsers } from 'utils'
+import { getLeague, getUser, getUserDisplayName, getTeamData, sortUsersByPoints, getRankedLeagueUsers } from 'utils'
 
 const CompactRosterTeam = styled.div`
     display: inline
@@ -63,8 +63,9 @@ const RankBlock = styled.div`
 function CompactUserRoster({userRosterWithData}) {
     return userRosterWithData.map(teamData => {
         return (
-            <Link key={teamData.uid} to={`/teams/${teamData.id}/${teamData.slug}`} style={{borderBottom: "none"}}>
+            <Link to={`/teams/${teamData.id}/${teamData.slug}`} style={{borderBottom: "none"}}>
                 <CompactRosterTeam
+                    key={teamData.uid}
                     className={`compact-roster team-id-${teamData.id}`}
                 >
                     <img src={teamData.logos[0].href} width="75" alt={teamData.displayName} title={teamData.displayName} />

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import SingleUser from 'components/SingleUser'
 import { getUser } from 'utils'
 
-const Users = () => {
+const Users = ({currentUser}) => {
     const { id } = useParams()
     
     const [userData, setUserData] = useState( { id: id, fetched: false } )
@@ -84,7 +84,7 @@ const Users = () => {
 
     return (
         <>
-            <SingleUser user={userData} />
+            <SingleUser user={userData} current={currentUser.id === userData.id} />
         </>
     )
 }

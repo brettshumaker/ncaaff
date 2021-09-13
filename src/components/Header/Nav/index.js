@@ -43,12 +43,20 @@ const StyledMenu = styled.nav`
     }
 `
 
-const Nav = ({open, setOpen}) => {
+const Nav = ({open, setOpen, currentUser}) => {
     return (
         <StyledMenu open={open}>
+            <Link to={`/users/${currentUser.id}`} onClick={() => setOpen(!open)}>
+                <span role="img" aria-label="Account">📔</span>
+                My Account
+            </Link>
             <Link to="/leagues/1" onClick={() => setOpen(!open)}>
                 <span role="img" aria-label="price">🏆</span>
-                League Standings
+                My Leagues
+            </Link>
+            <Link to="/" onClick={() => setOpen(!open)}>
+                <span role="img" aria-label="home">🏠</span>
+                Home
             </Link>
         </StyledMenu>
     )
