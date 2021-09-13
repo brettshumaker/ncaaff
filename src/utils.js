@@ -38,7 +38,8 @@ const isLocalStorageStale = key => {
  */
 const getLocalJSON = async () => {
     return new Promise((resolve, reject) => {
-        resolve(require( '/src/data/league-data.json'))
+        const localData = require( '/src/data/league-data.json')
+        resolve({...localData})
     })
 }
 
@@ -238,7 +239,7 @@ const getUser = async ({userID, leagueID = null}) => {
             return user
         }
 
-        console.log('inside getUser user', {...user})
+        console.log('inside getUser user', {...user}, JSON.stringify(user.points))
 
         return getUserLeagueRoster(userID, leagueID)
         .then( rosterPromise => rosterPromise)
