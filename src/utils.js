@@ -248,8 +248,9 @@ const getUser = async ({userID, leagueID = null}) => {
             return roster
         }).then( async roster => {
             console.log('inside getUser roster2', {...roster})
-             // Now get the user's total wins for this league
-             user.points = await getTotalRosterPoints(roster.roster)
+            // Now get the user's total wins for this league
+            user.points = await getTotalRosterPoints(roster.roster)
+            console.log('inside getUser user2', {...user})
             return user
         })
         .catch(error => {
