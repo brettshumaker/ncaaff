@@ -121,7 +121,7 @@ const SingleTeam = ( { id }) => {
             .then(data => {
                 const conferenceID = data.team.groups.isConference ? data.team.groups.id : data.team.groups.parent.id
                 const teamData = data.team
-                const conferenceData = fetch(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard/conferences?groups=${conferenceID}`)
+                fetch(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard/conferences?groups=${conferenceID}`)
                     .then(response => {
                         if (response.ok) {
                             return response.json()
@@ -148,8 +148,6 @@ const SingleTeam = ( { id }) => {
     if (error) return "Error!"
 
     const TeamGameLogo = ({team}) => {
-        console.log('teamgamelogo', team)
-
         return (
             <div className="game-team-logo">
                 <img src={team.team.logos[0].href} width="60" alt={team.team.displayName} title={team.team.displayName} />
@@ -168,8 +166,6 @@ const SingleTeam = ( { id }) => {
 
     const NextGame = () => {
         const nextGameData = teamData.nextEvent.pop()
-        console.log('teamData', teamData)
-        console.log('nextGameData', nextGameData)
 
         if ( ! nextGameData ) {
             return ''
@@ -217,10 +213,6 @@ const SingleTeam = ( { id }) => {
                 </PrettyGameInfo>
             </div>
         )
-    }
-
-    const Stats = () => {
-
     }
 
     return(

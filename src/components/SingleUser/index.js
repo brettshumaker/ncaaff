@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-import { getAllTeamData, getTeamWins, getTotalRosterPoints, getUserLeagueRoster } from 'utils'
 import { LeagueUserRow } from 'components/SingleLeague'
 
-const SingleUser = ( { user, current }) => {
+const SingleUser = ( { user }) => {
     const [userData, setUserData] = useState( user )
 
     const displayName = user.name.display !== '' ? user.name.display : `${user.name.first ?? ''} ${user.name.last ?? ''}`.trim()
@@ -32,7 +31,7 @@ const SingleUser = ( { user, current }) => {
 
     return (
         <>
-            <h1>{displayName}{current ? ' - OMG THIS IS ME' : ''}</h1>
+            <h1>{displayName}</h1>
             <h2>Leagues</h2>
             <UserLeagues />
         </>
