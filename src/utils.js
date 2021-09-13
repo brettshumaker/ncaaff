@@ -219,7 +219,6 @@ const getAllUsers = async () => {
  */
 const getUser = async ({userID, leagueID = null}) => {
     return getLocalJSON().then(function(data) {
-        console.log('inside getUser', {...data})
         const userData = data.users.filter( user => {
             return userID === user.id
         }).shift()
@@ -239,8 +238,6 @@ const getUser = async ({userID, leagueID = null}) => {
             return user
         }
 
-        console.log('inside getUser user', {...user}, JSON.stringify(user.points))
-
         // The user is likely already built out with their league data - return
         if ( user.points ) {
             return user
@@ -249,14 +246,11 @@ const getUser = async ({userID, leagueID = null}) => {
         return getUserLeagueRoster(userID, leagueID)
         .then( rosterPromise => rosterPromise)
         .then( roster => {
-            console.log('inside getUser roster', {...roster})
             user.roster = roster
             return roster
         }).then( async roster => {
-            console.log('inside getUser roster2', {...roster})
             // Now get the user's total wins for this league
             user.points = await getTotalRosterPoints(roster.roster)
-            console.log('inside getUser user2', {...user})
             return user
         })
         .catch(error => {

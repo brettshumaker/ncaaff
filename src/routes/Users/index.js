@@ -32,29 +32,21 @@ const Users = () => {
                     return id === user.id.toString()
                 }).shift()
 
-                console.log('thisUserData', {...thisUserData})
-
-                console.log('localData', {...localData})
-
                 // Get roster data
                 const thisUserRosterData = await Promise.all(thisUserData.leagues.map( async id => {
                     const leagueName = localData.leagues.filter( league => id === league.id ).shift().name
                     const rosterData = localData.leagues.filter( league => id === league.id )
                     .shift().users.filter( user => thisUserData.id === user.id ).shift()
-
-                    console.log('rosterData', {...rosterData})
                     
                     // Get all the team data here
                     const fullUserWithLeagueData = await getUser({userID: thisUserData.id, leagueID: id})
                     
-                    console.log('fullUserWithLeagueData', {...fullUserWithLeagueData})
-                    
                     // Add rosterData.points too
                     rosterData.name = leagueName
                     rosterData.id = id
-                    rosterData.roster = fullUserWithLeagueData.roster.roster ? fullUserWithLeagueData.roster.roster : fullUserWithLeagueData.roster
+                    // rosterData.roster = fullUserWithLeagueData.roster.roster ? fullUserWithLeagueData.roster.roster : fullUserWithLeagueData.roster
+                    rosterData.roster = fullUserWithLeagueData.roster.roster
                     rosterData.points = fullUserWithLeagueData.points
-                    console.log('rosterData2', {...rosterData})
                     return rosterData
                 }))
 
@@ -63,8 +55,6 @@ const Users = () => {
                     fetched: true,
                     leagueRosters: thisUserRosterData
                 }
-
-                console.log('thisUserData', {...thisUserData})
 
                 setUserData( thisUserData )
                 setLoading(false)
