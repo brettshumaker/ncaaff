@@ -104,7 +104,7 @@ const SingleLeague = ({id}) => {
             const leagueUserData = await Promise.all(league.users.map( user => {
                 return getUser( {userID: user.id, leagueID: league.id})
                     .then( async userData => {
-                        userData.roster = userData.roster.roster
+                        userData.roster = userData.roster.roster ? userData.roster.roster : userData.roster
                         const newRoster = []
                         await Promise.all(userData.roster.map( async ( team, index ) => {
                             return await getTeamData( team )
