@@ -32,11 +32,15 @@ const Users = () => {
                     return id === user.id.toString()
                 }).shift()
 
+                console.log('data', data)
+
                 // Get roster data
                 const thisUserRosterData = await Promise.all(thisUserData.leagues.map( async id => {
                     const leagueName = data.leagues.filter( league => id === league.id ).shift().name
                     const rosterData = data.leagues.filter( league => id === league.id )
                     .shift().users.filter( user => thisUserData.id === user.id ).shift()
+
+                    console.log('rosterData', rosterData)
     
                     // Get all the team data here
                     const fullUserWithLeagueData = await getUser({userID: thisUserData.id, leagueID: id})
