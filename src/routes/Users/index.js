@@ -32,9 +32,9 @@ const Users = () => {
                     return id === user.id.toString()
                 }).shift()
 
-                console.log('thisUserData', thisUserData)
+                console.log('thisUserData', {...thisUserData})
 
-                console.log('localData', localData)
+                console.log('localData', {...localData})
 
                 // Get roster data
                 const thisUserRosterData = await Promise.all(thisUserData.leagues.map( async id => {
@@ -42,7 +42,7 @@ const Users = () => {
                     const rosterData = localData.leagues.filter( league => id === league.id )
                     .shift().users.filter( user => thisUserData.id === user.id ).shift()
 
-                    console.log('rosterData', rosterData)
+                    console.log('rosterData', {...rosterData})
     
                     // Get all the team data here
                     const fullUserWithLeagueData = await getUser({userID: thisUserData.id, leagueID: id})
@@ -61,7 +61,7 @@ const Users = () => {
                     leagueRosters: thisUserRosterData
                 }
 
-                console.log('thisUserData', thisUserData)
+                console.log('thisUserData', {...thisUserData})
 
                 setUserData( thisUserData )
                 setLoading(false)
