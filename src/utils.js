@@ -218,6 +218,7 @@ const getAllUsers = async () => {
  */
 const getUser = async ({userID, leagueID = null}) => {
     return getLocalJSON().then(function(data) {
+        console.log('inside getUser', data)
         const userData = data.users.filter( user => {
             return userID === user.id
         }).shift()
