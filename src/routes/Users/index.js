@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom'
 
 import SingleUser from 'components/SingleUser'
-import { getUser, getlocalJSON } from 'utils'
+import { getUser } from 'utils'
 
 const Users = () => {
     const { id } = useParams()
@@ -26,7 +26,7 @@ const Users = () => {
 
             const fetchUserData = async () => {
 
-                const localData = await getlocalJSON()
+                const localData = JSON.parse(JSON.stringify(require( '/src/data/league-data.json')))
                 let thisUserData = localData.users.filter( user => {
                     // The initial state id is set as a string
                     return id === user.id.toString()
