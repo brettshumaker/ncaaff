@@ -26,18 +26,20 @@ const Users = () => {
 
             const fetchUserData = async () => {
 
-                const data = require( '/src/data/league-data.json')
-                let thisUserData = data.users.filter( user => {
+                const localData = require( '/src/data/league-data.json')
+                let thisUserData = localData.users.filter( user => {
                     // The initial state id is set as a string
                     return id === user.id.toString()
                 }).shift()
 
-                console.log('data', data)
+                console.log('thisUserData', thisUserData)
+
+                console.log('localData', localData)
 
                 // Get roster data
                 const thisUserRosterData = await Promise.all(thisUserData.leagues.map( async id => {
-                    const leagueName = data.leagues.filter( league => id === league.id ).shift().name
-                    const rosterData = data.leagues.filter( league => id === league.id )
+                    const leagueName = localData.leagues.filter( league => id === league.id ).shift().name
+                    const rosterData = localData.leagues.filter( league => id === league.id )
                     .shift().users.filter( user => thisUserData.id === user.id ).shift()
 
                     console.log('rosterData', rosterData)
@@ -58,6 +60,8 @@ const Users = () => {
                     fetched: true,
                     leagueRosters: thisUserRosterData
                 }
+
+                console.log('thisUserData', thisUserData)
 
                 setUserData( thisUserData )
                 setLoading(false)
