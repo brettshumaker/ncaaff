@@ -287,4 +287,8 @@ const getUserDisplayName = ({user}) => {
     return user.name.display !== '' ? user.name.display : `${user.name.first ?? ''} ${user.name.last ?? ''}`.trim()
 }
 
-export {getUser, getAllUsers, sortUsersByPoints, getLeague, getAllTeamData, getTeamData, getUserDisplayName, getTeamRecord, getTeamWins, useLocalStorage, getTotalRosterPoints, getUserLeagueRoster, getRankString, getRankedLeagueUsers}
+const slugifyText = (text) => {
+    return text.replace(/\s+/g, '-').toLowerCase()
+}
+
+export {getUser, getAllUsers, sortUsersByPoints, getLeague, getAllTeamData, getTeamData, getUserDisplayName, getTeamRecord, getTeamWins, useLocalStorage, getTotalRosterPoints, getUserLeagueRoster, getRankString, getRankedLeagueUsers, slugifyText}

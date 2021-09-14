@@ -9,6 +9,10 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 a {
     text-decoration: none;
     border-bottom: thin dotted;
