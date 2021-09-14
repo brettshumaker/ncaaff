@@ -4,16 +4,36 @@ import styled from 'styled-components'
 
 import { slugifyText } from 'utils'
 
+const TeamScheduleWrapper = styled.div`
+    background: #ffffff;
+    padding: 8px 0;
+    border-radius: 10px;
+    margin: 2em 0;
+
+    h4 {
+        margin: .5em 0 1em 12px;
+    }
+`
+
 const GameWrapper = styled.div`
     display: grid;
-    grid-template-columns: [date] 100px [game] 200px  [result time] auto;
+    grid-template-columns: [date] 80px [game] 1fr [result time] max-content;
     font-size: 12px;
     line-height: 19px;
     color: #6c6d6f;
     border-bottom: 1px solid #f1f2f3;
+    padding: 0 8px;
 
     &:nth-child(2n) {
         background: rgba(0,0,0,.02)
+    }
+
+    @media screen and (max-width: 550px) {
+        grid-template-columns: [date] 55px [game] 1fr [result time] max-content;
+
+        .date-day {
+            display: none
+        }
     }
 
     div {
@@ -86,7 +106,8 @@ const SingleGame = ({event, teamID}) => {
     const opponent = homeGame ? awayTeam : homeTeam
     const gameTimeData = getGameTime(event.date)
 
-    const dateDisplay = `${new Date( event.date ).toLocaleString('en-us', {weekday:'short'})}, ${new Date( event.date ).toLocaleString('en-us', {month:'short'})} ${new Date( event.date ).getDate()}`
+
+    const dateDisplay = <><span className="date-day">{new Date( event.date ).toLocaleString('en-us', {weekday:'short'})}, </span>{new Date( event.date ).toLocaleString('en-us', {month:'short'})} {new Date( event.date ).getDate()}</>
     const opponentDisplay = <div>
             {homeGame ? 'vs' : '@'} <Link to={`/teams/${opponent.id}/${slugifyText(opponent.team.displayName)}`} style={{borderBottom: "none"}}><img src={opponent.team.logos[0].href} alt={opponent.team.displayName} width="20px" style={{
                 verticalAlign: "top",
@@ -120,7 +141,7 @@ const SingleGame = ({event, teamID}) => {
             </div>
             {opponentDisplay}
             <div>
-                {gameTimeData.time}{mediaDisplayName !== '' ? ` on ${mediaDisplayName}` : ''}
+                {gameTimeData.time}<span className="game-time-media">{mediaDisplayName !== '' ? ` on ${mediaDisplayName}` : ''}</span>
             </div>
         </GameWrapper>
     )
@@ -150,19 +171,12 @@ const TeamSchedule = ({teamID}) => {
     }
 
     return (
-        <>
-        <div style={{
-            background: "#ffffff",
-            padding: "10px 12px",
-            borderRadius: "10px",
-            margin: "2em 0",
-        }}>
-        <h4>Full Schedule</h4>
+        <TeamScheduleWrapper>
+            <h4>Full Schedule</h4>
             {
                 teamSchedule.map( event => <SingleGame key={event.id} event={event} teamID={teamID} />)
             }
-        </div>
-        </>
+        </TeamScheduleWrapper>
     )
     
 }

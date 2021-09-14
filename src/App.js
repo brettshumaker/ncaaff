@@ -38,6 +38,19 @@ const GlobalStyles = createGlobalStyle`
     }
 `
 
+const StyledUserSwitcher = styled.div`
+    width: 150px;
+    position: absolute;
+    top: .5em;
+    right: 2em;
+    font-size: 10px;
+    line-height: 20px;
+
+    @media screen and (max-width: 550px) {
+        display: none;
+    }
+`
+
 const MainContentWrap = styled.div`
     margin: 0 6vw
 `

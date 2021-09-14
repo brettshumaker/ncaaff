@@ -9,6 +9,46 @@ const SingleTeamHeader = styled.div`
     display: grid;
     grid-template-columns: max-content 1fr;
     grid-gap: 15px;
+
+    @media screen and (max-width: 550px) {
+        grid-template-columns: 1fr
+    }
+`
+
+const SingleTeamLogo = styled.div`
+
+    @media screen and (max-width: 550px) {
+        position: relative;
+        text-align: center;
+        padding: 10px;
+        overflow: hidden;
+
+        &:before {
+            background-image: ${props => `url(${props.logoURL})`};
+            background-position: center center;
+            background-size: cover;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            opacity: .3;
+            filter: blur(7px);
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #c800001a;
+            z-index: -2;
+        }
+    }
 `
 
 const PrettyGameInfo = styled.div`
@@ -18,13 +58,33 @@ const PrettyGameInfo = styled.div`
     width: 100%;
     background: #ffffff;
     padding: 1em 1em .5em;
-    border-radius: 4px;
-    border: thin solid #bfbfbf;
-    box-shadow: inset 31px 32px 87px #0000001a;
+    border-radius: 10px;
+
+    @media screen and (max-width: 550px) {
+        grid-template-columns: 1em 1fr 1em;
+        grid-column-gap: 0;
+        padding: 1em 0 .5em;
+
+        > div {
+            grid-column-start: 2;
+            grid-column-end: 2
+        }
+    }
+
+    h4 {
+        margin: 0 0 8px;
+        grid-column-start: 2;
+        grid-column-end: 2;
+
+        @media screen and (min-width: 551px) {
+            grid-column-start: 1;
+            grid-column-end: 4;
+        }
+    }
 
     .away, .home {
         display: grid;
-        grid-template-columns: 1fr 65px;
+        grid-template-columns: 1fr 60px;
         grid-column-gap: 6px;
         align-items: center
     }
@@ -56,6 +116,20 @@ const PrettyGameInfo = styled.div`
 
     .away {
         text-align: right;
+
+        @media screen and (max-width: 550px) {
+            text-align: left;
+            grid-template-columns: 60px 1fr;
+
+            .game-team-logo {
+                grid-column-start: 1;
+            }
+
+            .team-name {
+                grid-column-start: 2;
+                grid-row-start: 1;
+            }
+        }
     }
 
     .game-team-logo {
@@ -70,8 +144,31 @@ const PrettyGameInfo = styled.div`
         display: grid;
         grid-template-rows: 1fr 17px 1fr;
 
+        @media screen and (max-width: 550px) {
+            text-align: left;
+            grid-template-rows: 1fr;
+            grid-template-columns: max-content max-content 1fr;
+            grid-column-gap: 8px;
+            margin: 0 0 15px;
+            align-items: center;
+            grid-column-start: 1;
+            grid-column-end: 4;
+            grid-row-start: 2;
+            padding: 10px 1.5em;
+            background: #fafafa;
+            border-top: 1px solid #f1f2f3;
+            border-bottom: 1px solid #f1f2f3;
+        }
+
         .channel {
             align-self: end;
+
+            @media screen and (max-width: 550px) {
+                grid-column-start: 3;
+                grid-row-start: 1;
+                align-self: center;
+                text-align: right;
+            }
         }
 
         .date {
@@ -79,6 +176,18 @@ const PrettyGameInfo = styled.div`
             font-size: 13px;
             font-weight: 600;
             color: #48494a;
+
+            @media screen and (max-width: 550px) {
+                grid-column-start: 1;
+                grid-row-start: 1;
+            }
+        }
+
+        .time {
+            @media screen and (max-width: 550px) {
+                grid-column-start: 2;
+                grid-row-start: 1;
+            }
         }
     }
 
@@ -92,6 +201,11 @@ const PrettyGameInfo = styled.div`
         opacity: 0.45;
         margin-top: 1.5em;
         transition: opacity .25s;
+
+        @media screen and (max-width: 550px) {
+            grid-column-start: 2;
+            grid-column-end: 2;
+        }
 
         &:hover {
             opacity: .8;
@@ -200,8 +314,8 @@ const SingleTeam = ( { id }) => {
 
         return(
             <div className="next-game">
-                <h4>Next Game:</h4>
                 <PrettyGameInfo className="prettGameInfo">
+                    <h4>Next Game</h4>
                     <div className="away">
                         <span className="team-name"><span className="rank">{awayTeam.rank}</span> {awayTeam.team.displayName}</span>
                         <TeamGameLogo team={awayTeam} />
@@ -236,9 +350,9 @@ const SingleTeam = ( { id }) => {
     return(
         <>
             <SingleTeamHeader>
-                <div>
+                <SingleTeamLogo logoURL={teamData.logos[0].href}>
                     <img src={teamData.logos[0].href} width="150" alt={teamData.displayName} title={teamData.displayName} />
-                </div>
+                </SingleTeamLogo>
                 <div>
                     <h1><a href={teamData.links[0].href} title={`View ${teamData.displayName} on ESPN`} target="_blank">{teamData.displayName}</a></h1>
                     <h3>{teamData.groups.conferenceData[0].shortName}{ ! teamData.groups.isConference ? ` (${teamData.groups.conferenceData.
