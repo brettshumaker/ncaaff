@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { getTeamRecord } from 'utils';
+import TeamSchedule from 'components/TeamSchedule';
 import ESPN from 'images/ESPN_wordmark.svg'
 
 const SingleTeamHeader = styled.div`
@@ -14,9 +15,7 @@ const PrettyGameInfo = styled.div`
     display: grid;
     grid-template-columns: 1fr max-content 1fr;
     grid-column-gap: 30px;
-    min-width: 50%;
-    max-width: 100%;
-    width: 800px;
+    width: 100%;
     background: #ffffff;
     padding: 1em 1em .5em;
     border-radius: 4px;
@@ -172,6 +171,7 @@ const SingleTeam = ( { id }) => {
     }
 
     const NextGame = () => {
+        // console.log('nextGame: teamData', teamData)
         const nextGameData = teamData.nextEvent.pop()
 
         if ( ! nextGameData ) {
@@ -249,6 +249,7 @@ const SingleTeam = ( { id }) => {
                 </div>
             </SingleTeamHeader>
             <NextGame />
+            <TeamSchedule teamID={id} />
         </>
     )
 }
