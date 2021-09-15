@@ -1,12 +1,35 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { BsGearFill } from 'react-icons/bs'
+import styled from 'styled-components'
 
 import { LeagueUserRow } from 'components/SingleLeague'
+import { useAuth } from 'context/auth-context'
+import { getUserDisplayName } from 'utils'
+
+const SingleUserPage = styled.div`
+    position: relative;
+`
+const SettingsLink = styled.div`
+    background: var(--black);
+    color: var(--white);
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 28px;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+`
 
 const SingleUser = ( { user }) => {
     const [userData, setUserData] = useState( user )
+    const {user: loggedInUser} = useAuth();
 
-    const displayName = user.name.display !== '' ? user.name.display : `${user.name.first ?? ''} ${user.name.last ?? ''}`.trim()
+    const isThisUser = loggedInUser.id === user.id
 
     const UserLeagues = () => {
         return(
@@ -30,11 +53,14 @@ const SingleUser = ( { user }) => {
     }
 
     return (
-        <>
-            <h1>{displayName}</h1>
+        <SingleUserPage>
+            <h1>{getUserDisplayName({user})}</h1>
+            {
+                isThisUser ? <SettingsLink><BsGearFill /></SettingsLink> : ''
+            }
             <h2>Leagues</h2>
             <UserLeagues />
-        </>
+        </SingleUserPage>
     )
 }
 

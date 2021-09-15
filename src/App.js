@@ -2,7 +2,6 @@
  * External dependencies
  */
 import {
-    BrowserRouter as Router,
     Switch,
     Route
   } from "react-router-dom";
@@ -18,6 +17,7 @@ import Footer from 'components/Footer/'
 import Teams from 'routes/Teams'
 import Users from 'routes/Users'
 import Leagues from 'routes/Leagues'
+import UserSwitcher from "components/UserSwitcher";
 
 const GlobalStyles = createGlobalStyle`
     html {
@@ -52,13 +52,16 @@ const StyledUserSwitcher = styled.div`
 `
 
 const MainContentWrap = styled.div`
-    margin: 0 6vw
+    margin: 0 6vw;
+    position: relative;
 `
 const App = () => {
     return (
-        <Router>
+        <>
             <GlobalStyles />
-            <Header />
+            <Header>
+                { process.env.NODE_ENV === 'development' ? <UserSwitcher /> : ''}
+            </Header>
             <MainContentWrap>
                 <Switch>
                     <Route path="/users/:id" children={<Users />} />
@@ -68,7 +71,7 @@ const App = () => {
                 </Switch>
             </MainContentWrap>
             <Footer />
-        </Router>
+        </>
     )
 }
 
