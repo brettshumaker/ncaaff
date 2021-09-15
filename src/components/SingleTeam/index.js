@@ -255,7 +255,7 @@ const SingleTeam = ( { id }) => {
             .catch(error => {
                 setError(error)
             })
-    }, [])
+    }, [id])
 
     if (loading) return "Loading..."
     if (error) return "Error!"
