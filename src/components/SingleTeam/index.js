@@ -11,7 +11,11 @@ const SingleTeamHeader = styled.div`
     grid-gap: 15px;
 
     @media screen and (max-width: 550px) {
-        grid-template-columns: 1fr
+        grid-template-columns: 1fr;
+
+        h1 {
+            margin: 0;
+        }
     }
 `
 
@@ -45,7 +49,8 @@ const SingleTeamLogo = styled.div`
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #c800001a;
+            /* Need to see if we can easily get the team color here...using white until then */
+            background-color: #ffffff1a;
             z-index: -2;
         }
     }
@@ -278,9 +283,7 @@ const SingleTeam = ( { id }) => {
     }
 
     const NextGame = () => {
-        // console.log('nextGame: teamData', teamData)
         const nextGameData = teamData.nextEvent.pop()
-        // console.log('nextGameData', nextGameData)
 
         if ( ! nextGameData ) {
             return ''

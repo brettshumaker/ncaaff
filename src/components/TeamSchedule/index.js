@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 import { slugifyText } from 'utils'
@@ -109,10 +108,10 @@ const SingleGame = ({event, teamID}) => {
 
     const dateDisplay = <><span className="date-day">{new Date( event.date ).toLocaleString('en-us', {weekday:'short'})}, </span>{new Date( event.date ).toLocaleString('en-us', {month:'short'})} {new Date( event.date ).getDate()}</>
     const opponentDisplay = <div>
-            {homeGame ? 'vs' : '@'} <Link to={`/teams/${opponent.id}/${slugifyText(opponent.team.displayName)}`} style={{borderBottom: "none"}}><img src={opponent.team.logos[0].href} alt={opponent.team.displayName} width="20px" style={{
+            {homeGame ? 'vs' : '@'} <a href={`/teams/${opponent.id}/${slugifyText(opponent.team.displayName)}`} style={{borderBottom: "none"}}><img src={opponent.team.logos[0].href} alt={opponent.team.displayName} width="20px" style={{
                 verticalAlign: "top",
                 margin: "0 0 0 .65em",
-            }} /></Link> <span className="team-name"><span className="rank">{opponent.rank}</span> <Link to={`/teams/${opponent.id}/${slugifyText(opponent.team.displayName)}`} style={{borderBottom: "none"}}>{opponent.team.nickname}</Link></span>
+            }} /></a> <span className="team-name"><span className="rank">{opponent.rank}</span> <a href={`/teams/${opponent.id}/${slugifyText(opponent.team.displayName)}`} style={{borderBottom: "none"}}>{opponent.team.nickname}</a></span>
         </div>
 
     // Return a completed game
