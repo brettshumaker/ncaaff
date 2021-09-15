@@ -53,7 +53,7 @@ async function getTeamSchedule( {teamID} ) {
     const thisYear = new Date( Date.now() ).getFullYear()
 
     // Regular Season
-    const regularSeason = await fetch(`http://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/${teamID}/schedule?season=${thisYear}&seasontype=2`)
+    const regularSeason = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/${teamID}/schedule?season=${thisYear}&seasontype=2`)
         .then(response => {
             if ( response.ok) {
                 return response.json()
@@ -65,7 +65,7 @@ async function getTeamSchedule( {teamID} ) {
         })
 
     // Post Season
-    const postSeason = await fetch(`http://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/${teamID}/schedule?season=${thisYear}&seasontype=3`)
+    const postSeason = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/${teamID}/schedule?season=${thisYear}&seasontype=3`)
         .then(response => {
             if ( response.ok) {
                 return response.json()
