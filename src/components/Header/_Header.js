@@ -22,14 +22,6 @@ const StyledHeader = styled.div`
             font-size: 13.5px;
         }
     }
-
-
-    .user-selector {
-        text-align: right;
-        @media screen and (max-width: 550px) {
-            display: none;
-        }
-    }
 `
 
 const Header = ({children}) => {
