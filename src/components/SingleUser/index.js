@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { LeagueUserRow } from 'components/SingleLeague'
 import { useAuth } from 'context/auth-context'
-import { getUserDisplayName } from 'utils'
+import { getUserDisplayName } from 'utils/utils'
 
 const SingleUserPage = styled.div`
     position: relative;

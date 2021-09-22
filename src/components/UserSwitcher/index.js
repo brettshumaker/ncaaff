@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useAuth } from 'context/auth-context'
-import { getAllUsers, getUserDisplayName, useLocalStorage } from 'utils'
+import { getAllUsers, getUserDisplayName, useLocalStorage } from 'utils/utils'
 
 
 const StyledUserSwitcher = styled.div`

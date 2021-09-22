@@ -1,8 +1,16 @@
+/**
+ * External Dependencies
+ */
 import { useState, useEffect } from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
-import { slugifyText } from 'utils'
+/**
+ * Internal Dependencies
+ */
+import { slugifyText } from 'utils/utils'
+import FeaturedGame from 'components/FeaturedGame'
+import { isGameComplete, getGameTime, getTeamSchedule, getNextOrCurrentGame } from 'utils/game'
 
 const TeamScheduleWrapper = styled.div`
     background: #ffffff;
@@ -49,54 +57,7 @@ const GameWrapper = styled.div`
     }
 `
 
-async function getTeamSchedule( {teamID} ) {
-    const thisYear = new Date( Date.now() ).getFullYear()
-
-    // Regular Season
-    const regularSeason = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/${teamID}/schedule?season=${thisYear}&seasontype=2`)
-        .then(response => {
-            if ( response.ok) {
-                return response.json()
-            }
-            throw response
-        })
-        .then(scheduleData => {
-            return scheduleData.events
-        })
-
-    // Post Season
-    const postSeason = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/${teamID}/schedule?season=${thisYear}&seasontype=3`)
-        .then(response => {
-            if ( response.ok) {
-                return response.json()
-            }
-            throw response
-        })
-        .then(scheduleData => {
-            return scheduleData.events
-        })
-
-    return [...regularSeason, ...postSeason]
-}
-
-function isGameComplete(event) {
-    return event.competitions[0].status.type.completed
-}
-
-function getGameTime(dateString) {
-    const dateObj = new Date(dateString)
-    const returnObj = {
-        weekday: dateObj.toLocaleString('en-us',{ weekday: 'long'}),
-        dayMonth: dateObj.toLocaleString('en-US',{day: 'numeric',month: 'numeric'}),
-        time: dateObj.toLocaleString('en-US',{hour:'numeric', minute: 'numeric'}),
-    }
-
-    returnObj.time = returnObj.time !== '12:00 AM' ? returnObj.time : 'TBD'
-
-    return returnObj
-}
-
-const SingleGame = ({event, teamID}) => {
+const CompactSingleGame = ({event, teamID}) => {
     const isComplete = isGameComplete(event)
     const game = event.competitions[0]
     const mediaDisplayName = game.broadcasts[0]?.media.shortName ?? ''
@@ -149,34 +110,69 @@ const SingleGame = ({event, teamID}) => {
 
 const TeamSchedule = ({teamID}) => {
     const [teamSchedule, setTeamSchedule] = useState([]);
-    const [loading, setLoading] = useState( true );
+    const [scheduleLoading, setScheduleLoading] = useState( true );
+    const [nextGame, setNextGame] = useState([]);
+    const [nextGameLoading, setNextGameLoading] = useState( true );
 
     useEffect( () => {
         // Gets the full team schedule
         getTeamSchedule( {teamID} )
             .then( schedule => {
                 setTeamSchedule( schedule )
-                setLoading(false)
+
+                // We have everything we need now...
+                setScheduleLoading(false)
             })
 
     }, [teamID])
 
-    if ( loading ) {
+    useEffect( () => {
+        if ( ! scheduleLoading ) {
+            // Now get the next game from the schedule.
+            setNextGame( getNextOrCurrentGame( teamSchedule ) )
+            setNextGameLoading( false )
+        }
+    }, [teamSchedule, scheduleLoading])
+
+    const NextGame = () => {
+        if ( nextGameLoading ) {
+            return (
+                <>
+                    <p>Loading next game...</p>
+                </>
+            )
+        }
+
         return (
-            <>
+            <FeaturedGame game={nextGame} />
+        )
+    }
+
+    const FullSchedule = () => {
+        if ( scheduleLoading ) {
+            return (
+                <>
+                    <h4>Full Schedule</h4>
+                    <p>Loading team schedule...</p>
+                </>
+            )
+        }
+
+        return (
+            <TeamScheduleWrapper>
                 <h4>Full Schedule</h4>
-                <p>Loading team schedule...</p>
-            </>
+                {
+                    teamSchedule.map( event => <CompactSingleGame key={event.id} event={event} teamID={teamID} />)
+                }
+            </TeamScheduleWrapper>
         )
     }
 
     return (
-        <TeamScheduleWrapper>
-            <h4>Full Schedule</h4>
-            {
-                teamSchedule.map( event => <SingleGame key={event.id} event={event} teamID={teamID} />)
-            }
-        </TeamScheduleWrapper>
+        <>
+            <NextGame />
+            <FullSchedule />
+        </>
     )
     
 }

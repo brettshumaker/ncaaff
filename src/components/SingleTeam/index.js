@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
-import { getTeamRecord } from 'utils';
+import { getTeamRecord } from 'utils/utils';
 import TeamSchedule from 'components/TeamSchedule';
-import ESPN from 'images/ESPN_wordmark.svg'
 
 const SingleTeamHeader = styled.div`
     display: grid;
@@ -51,172 +50,6 @@ const SingleTeamLogo = styled.div`
     }
 `
 
-const PrettyGameInfo = styled.div`
-    display: grid;
-    grid-template-columns: 1fr max-content 1fr;
-    grid-column-gap: 30px;
-    width: 100%;
-    background: #ffffff;
-    padding: 1em 1em .5em;
-    border-radius: 10px;
-
-    @media screen and (max-width: 550px) {
-        grid-template-columns: 1em 1fr 1em;
-        grid-column-gap: 0;
-        padding: 1em 0 .5em;
-
-        > div {
-            grid-column-start: 2;
-            grid-column-end: 2
-        }
-    }
-
-    h4 {
-        margin: 0 0 8px;
-        grid-column-start: 2;
-        grid-column-end: 2;
-
-        @media screen and (min-width: 551px) {
-            grid-column-start: 1;
-            grid-column-end: 4;
-        }
-    }
-
-    .away, .home {
-        display: grid;
-        grid-template-columns: 1fr 60px;
-        grid-column-gap: 6px;
-        align-items: center
-    }
-
-    .team-name {
-        font-weight: bold
-    }
-
-    .rank {
-        font-size: 11px;
-        color: #424344;
-        position: relative;
-        bottom: 2px;
-        margin-right: .1rem;
-    }
-
-    .home {
-        grid-template-columns: 60px 1fr;
-
-        .game-team-logo {
-            grid-column-start: 1
-        }
-
-        .team-name {
-            grid-column-start: 2;
-            grid-row-start: 1;
-        }
-    }
-
-    .away {
-        text-align: right;
-
-        @media screen and (max-width: 550px) {
-            text-align: left;
-            grid-template-columns: 60px 1fr;
-
-            .game-team-logo {
-                grid-column-start: 1;
-            }
-
-            .team-name {
-                grid-column-start: 2;
-                grid-row-start: 1;
-            }
-        }
-    }
-
-    .game-team-logo {
-        position: relative
-    }
-
-    .game-date-time-channel {
-        text-align: center;
-        font-size: 10px;
-        letter-spacing: .7px;
-        color: #6c6d6f;
-        display: grid;
-        grid-template-rows: 1fr 17px 1fr;
-
-        @media screen and (max-width: 550px) {
-            text-align: left;
-            grid-template-rows: 1fr;
-            grid-template-columns: max-content max-content 1fr;
-            grid-column-gap: 8px;
-            margin: 0 0 15px;
-            align-items: center;
-            grid-column-start: 1;
-            grid-column-end: 4;
-            grid-row-start: 2;
-            padding: 10px 1.5em;
-            background: #fafafa;
-            border-top: 1px solid #f1f2f3;
-            border-bottom: 1px solid #f1f2f3;
-        }
-
-        .channel {
-            align-self: end;
-
-            @media screen and (max-width: 550px) {
-                grid-column-start: 3;
-                grid-row-start: 1;
-                align-self: center;
-                text-align: right;
-            }
-        }
-
-        .date {
-            align-self: center;
-            font-size: 13px;
-            font-weight: 600;
-            color: #48494a;
-
-            @media screen and (max-width: 550px) {
-                grid-column-start: 1;
-                grid-row-start: 1;
-            }
-        }
-
-        .time {
-            @media screen and (max-width: 550px) {
-                grid-column-start: 2;
-                grid-row-start: 1;
-            }
-        }
-    }
-
-    .game-meta {
-        grid-column-start: 1;
-        grid-column-end: 4;
-        align-self: center;
-        text-align: center;
-        width: 100%;
-        font-size: 11px;
-        opacity: 0.45;
-        margin-top: 1.5em;
-        transition: opacity .25s;
-
-        @media screen and (max-width: 550px) {
-            grid-column-start: 2;
-            grid-column-end: 2;
-        }
-
-        &:hover {
-            opacity: .8;
-        }
-
-        a {
-            border-bottom: none
-        }
-    }
-`
-
 const SingleTeam = ( { id }) => {
 
     const [teamData, setTeamData] = useState( null );
@@ -234,7 +67,7 @@ const SingleTeam = ( { id }) => {
             .then(data => {
                 const conferenceID = data.team.groups.isConference ? data.team.groups.id : data.team.groups.parent.id
                 const teamData = data.team
-                fetch(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard/conferences?groups=${conferenceID}`)
+                fetch(`https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard/conferences?groups=${conferenceID}`)
                     .then(response => {
                         if (response.ok) {
                             return response.json()
@@ -260,93 +93,6 @@ const SingleTeam = ( { id }) => {
     if (loading) return "Loading..."
     if (error) return "Error!"
 
-    const TeamGameLogo = ({team}) => {
-        return (
-            <div className="game-team-logo">
-                <img src={team.team.logos[0].href} width="60" alt={team.team.displayName} title={team.team.displayName} />
-            </div>
-        )
-    }
-
-    function getGameTime(dateString) {
-        const dateObj = new Date(dateString)
-        return {
-            weekday: dateObj.toLocaleString('en-us',{ weekday: 'long'}),
-            dayMonth: dateObj.toLocaleString('en-US',{day: 'numeric',month: 'numeric'}),
-            time: dateObj.toLocaleString('en-US',{hour:'numeric', minute: 'numeric', timeZoneName: 'short'}),
-        }
-    }
-
-    function gameTimeInPast(gameDateString) {
-        const gameDateObj = new Date(gameDateString)
-        const nowDateObj = new Date(Date.now())
-
-        return ( gameDateObj.setHours(0,0,0,0) <= nowDateObj.setHours(0,0,0,0) )
-    }
-
-    const NextGame = () => {
-        // console.log('nextGame: teamData', teamData)
-        const nextGameData = teamData.nextEvent.pop()
-
-        if ( ! nextGameData ) {
-            return ''
-        }
-
-        const mediaDisplayName = nextGameData.competitions[0].broadcasts[0]?.media.shortName
-        const homeTeam = nextGameData.competitions[0].competitors.find(team => team.homeAway === 'home')
-        const awayTeam = nextGameData.competitions[0].competitors.find(team => team.homeAway === 'away')
-        const venue = `${nextGameData.competitions[0].venue.fullName} - ${nextGameData.competitions[0].venue.address.city}, ${nextGameData.competitions[0].venue.address.state}`
-        const gamecastLink = nextGameData.links.find(link => link.text === 'Gamecast').href
-        const gameTimeData = getGameTime(nextGameData.date)
-        homeTeam.rank = homeTeam.curatedRank.current > 25 ? '' : homeTeam.curatedRank.current
-        awayTeam.rank = awayTeam.curatedRank.current > 25 ? '' : awayTeam.curatedRank.current
-
-        const nextGameInPast = gameTimeInPast(nextGameData.date)
-
-        if ( nextGameInPast ) {
-            return (
-                <div className="next-game">
-                    <h4>Next Game:</h4>
-                    <p>Waiting on ESPN to update the next game...</p>
-                </div>
-            )
-        }
-
-        return(
-            <div className="next-game">
-                <PrettyGameInfo className="prettGameInfo">
-                    <h4>Next Game</h4>
-                    <div className="away">
-                        <span className="team-name"><span className="rank">{awayTeam.rank}</span> {awayTeam.team.displayName}</span>
-                        <TeamGameLogo team={awayTeam} />
-                    </div>
-                    <div className="game-date-time-channel">
-                        <span className="channel">{mediaDisplayName ? mediaDisplayName : ''}</span>
-                        <span className="date">{gameTimeData.dayMonth}</span>
-                        <span className="time">{gameTimeData.time}</span>
-                    </div>
-                    <div className="home">
-                        <span className="team-name"><span className="rank">{homeTeam.rank}</span>{homeTeam.team.displayName}</span>
-                        <TeamGameLogo team={homeTeam} />
-                    </div>
-                    <div className="game-meta">
-                        <span className="venue">{venue}</span> 
-                        <span className="gamecast" style={{
-                            borderLeft: "thin solid",
-                            marginLeft: ".5em",
-                            paddingLeft: ".5em",
-                        }}>
-                            <a href={gamecastLink} target="_blank">
-                                <img src={ESPN} alt="ESPN" title="ESPN" style={{height:"8px",marginRight:"2px"}} /> 
-                                Gamecast
-                            </a>
-                        </span>
-                    </div>
-                </PrettyGameInfo>
-            </div>
-        )
-    }
-
     return(
         <>
             <SingleTeamHeader>
@@ -362,7 +108,6 @@ const SingleTeam = ( { id }) => {
                     <h3>Record: {getTeamRecord(teamData)}</h3>
                 </div>
             </SingleTeamHeader>
-            <NextGame />
             <TeamSchedule teamID={id} />
         </>
     )

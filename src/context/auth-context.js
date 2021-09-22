@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {useAsync, getUser, useLocalStorage} from 'utils'
+import {useAsync, getUser, useLocalStorage} from 'utils/utils'
 // import {FullPageSpinner, FullPageErrorFallback} from 'components/lib'
 
 async function bootstrapAppData() {

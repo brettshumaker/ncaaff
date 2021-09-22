@@ -46,6 +46,13 @@ const getLocalJSON = async () => {
 }
 
 /**
+ * Returns Date.now() into a string that can be compared against a game date string from the ESPN API
+ */
+const dateToESPNISO = () => {
+    return new Date( Date.now() ).toISOString().slice(0,-8) + 'Z'
+}
+
+/**
  * Get data for a single team
  */
 async function getTeamData(team) {
@@ -370,4 +377,4 @@ function useAsync(initialState) {
   }
 }
 
-export {getUser, getAllUsers, sortUsersByPoints, getLeague, getAllTeamData, getTeamData, getUserDisplayName, getTeamRecord, getTeamWins, useLocalStorage, getTotalRosterPoints, getUserLeagueRoster, getRankString, getRankedLeagueUsers, slugifyText, useAsync}
+export {getUser, getAllUsers, sortUsersByPoints, getLeague, getAllTeamData, getTeamData, getUserDisplayName, getTeamRecord, getTeamWins, useLocalStorage, getTotalRosterPoints, getUserLeagueRoster, getRankString, getRankedLeagueUsers, slugifyText, useAsync, dateToESPNISO}

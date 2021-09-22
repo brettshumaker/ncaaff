@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { getLeague, getUser, getUserDisplayName, getTeamData, getRankedLeagueUsers } from 'utils'
+import { getLeague, getUser, getUserDisplayName, getTeamData, getRankedLeagueUsers } from 'utils/utils'
 
 const CompactRosterTeam = styled.div`
     display: inline
