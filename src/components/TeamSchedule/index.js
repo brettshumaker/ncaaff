@@ -48,6 +48,24 @@ const GameWrapper = styled.div`
         padding: 4px 4px 3px;
     }
 
+    
+    .opponent-display {
+        display: grid;
+        grid-template-columns: 18px 12px 20px 1fr;
+        grid-column-gap: 2px;
+        padding-left: 0;
+
+        img {
+            vertical-align: top;
+        }
+
+        span.rank {
+            font-size: 10px;
+            font-weight: bold;
+            text-align: right;
+        }
+    }
+
     .game-result {
         color: red;
         font-weight: bold;
@@ -69,11 +87,8 @@ const CompactSingleGame = ({event, teamID}) => {
 
 
     const dateDisplay = <><span className="date-day">{new Date( event.date ).toLocaleString('en-us', {weekday:'short'})}, </span>{new Date( event.date ).toLocaleString('en-us', {month:'short'})} {new Date( event.date ).getDate()}</>
-    const opponentDisplay = <div>
-            {homeGame ? 'vs' : '@'} <Link to={`/teams/${opponent.id}/${slugifyText(opponent.team.displayName)}`} style={{borderBottom: "none"}}><img src={opponent.team.logos[0].href} alt={opponent.team.displayName} width="20px" style={{
-                verticalAlign: "top",
-                margin: "0 0 0 .65em",
-            }} /></Link> <span className="team-name"><span className="rank">{opponent.rank}</span> <Link to={`/teams/${opponent.id}/${slugifyText(opponent.team.displayName)}`} style={{borderBottom: "none"}}>{opponent.team.nickname}</Link></span>
+    const opponentDisplay = <div className="opponent-display">
+            {homeGame ? 'vs' : '@'} <span className="rank">{opponent?.curatedRank.current <= 25 ? opponent.curatedRank.current : ''}</span><Link to={`/teams/${opponent.id}/${slugifyText(opponent.team.displayName)}`} style={{borderBottom: "none"}}><img src={opponent.team.logos[0].href} alt={opponent.team.displayName} width="20px" /></Link><span className="team-name"><Link to={`/teams/${opponent.id}/${slugifyText(opponent.team.displayName)}`} style={{borderBottom: "none"}}>{opponent.team.nickname}</Link></span>
         </div>
 
     // Return a completed game
