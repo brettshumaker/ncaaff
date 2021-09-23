@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 export const PrettyGameInfo = styled.div`
     display: grid;
@@ -302,5 +302,22 @@ export const PrettyGameInfo = styled.div`
         a {
             border-bottom: none
         }
+    }
+`
+
+const scrolllastplay = (left) => keyframes`
+    0% {
+        left: 0;
+    }
+    25% {
+        left: ${left}px; /* This needs to be a variable */
+    }
+`
+
+export const ScrolledOverflowContainer = styled.p`
+    @media screen and (max-width: 550px) {
+        position: relative;
+        animation: 8s infinite linear ${props => scrolllastplay(props.scrollAmount)};
+        animation-delay: 1.5s;
     }
 `

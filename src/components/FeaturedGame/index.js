@@ -2,7 +2,6 @@
  * External Dependencies
  */
 import { useEffect, useState, useRef } from 'react'
-import styled, { keyframes } from 'styled-components'
 
 /**
  * Internal Dependencies
@@ -10,7 +9,7 @@ import styled, { keyframes } from 'styled-components'
 import ESPN from 'images/ESPN_wordmark.svg'
 import { useAsync } from 'utils/utils'
 import { getGameTime, gameShouldHaveStarted, getLiveGameData } from 'utils/game'
-import { PrettyGameInfo } from './style'
+import { PrettyGameInfo, ScrolledOverflowContainer } from './style'
 
 const TeamGameLogo = ({team}) => {
     return (
@@ -56,23 +55,6 @@ const FutureGame = ( {gameData} ) => {
         </div>
     )
 }
-
-const scrolllastplay = (left) => keyframes`
-    0% {
-        left: 0;
-    }
-    25% {
-        left: ${left}px; /* This needs to be a variable */
-    }
-`
-
-const ScrolledOverflowContainer = styled.p`
-    @media screen and (max-width: 550px) {
-        position: relative;
-        animation: 8s infinite linear ${props => scrolllastplay(props.scrollAmount)};
-        animation-delay: 1.5s;
-    }
-`
 
 const CurrentGame = ( { gameData, basicGameData } ) => {
     const [ scrollingPlayScrollLeft, setScrollingPlayScrollLeft ] = useState(0);
