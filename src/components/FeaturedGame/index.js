@@ -10,7 +10,7 @@ import styled, { keyframes } from 'styled-components'
 import ESPN from 'images/ESPN_wordmark.svg'
 import { useAsync } from 'utils/utils'
 import { getGameTime, gameShouldHaveStarted, getLiveGameData } from 'utils/game'
-import { PrettyGameInfo } from './PrettyGameInfo'
+import { PrettyGameInfo } from './style'
 
 const TeamGameLogo = ({team}) => {
     return (

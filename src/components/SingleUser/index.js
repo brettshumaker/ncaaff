@@ -1,31 +1,20 @@
-import { useState, useEffect } from 'react'
+/**
+ * External Dependencies
+ */
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BsGearFill } from 'react-icons/bs'
-import styled from 'styled-components'
 
+/**
+ * Internal Dependencies
+ */
 import { LeagueUserRow } from 'components/SingleLeague'
 import { useAuth } from 'context/auth-context'
 import { getUserDisplayName } from 'utils/utils'
-
-const SingleUserPage = styled.div`
-    position: relative;
-`
-const SettingsLink = styled.div`
-    background: var(--black);
-    color: var(--white);
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 28px;
-    width: 40px;
-    height: 40px;
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-`
+import { SingleUserPage, SettingsLink } from './style'
 
 const SingleUser = ( { user }) => {
+    // TODO - check this out
     const [userData, setUserData] = useState( user )
     const {user: loggedInUser} = useAuth();
 
