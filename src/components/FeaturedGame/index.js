@@ -67,6 +67,7 @@ const CurrentGame = ( { gameData, basicGameData } ) => {
     const someoneHasPossession = awayTeam.possession || homeTeam.possession;
     const downDistance = gameData.drives.current?.plays.slice(-1)[0]?.end?.downDistanceText
     const lastPlay = gameData.drives.current?.plays.slice(-1)[0].text;
+    const gameStatus = gameData.header.competitions[0].status.type.name;
     // console.log(gameData.drives.current.plays.slice(-1)[0], downDistance !== undefined)
 
     const autoScrollPlay = useRef(null)
@@ -92,6 +93,7 @@ const CurrentGame = ( { gameData, basicGameData } ) => {
                 </div>
                 <div className="game-date-time-channel">
                     <span className="channel">{mediaDisplayName ? mediaDisplayName : ''}</span>
+                    { gameStatus === 'STATUS_FINAL' && <span className="date">{basicGameData.gameTimeData.dayMonth}</span>}
                     <span className="clock-quarter">{shortDetail}</span>
                     { downDistance !== undefined && <span className="down-distance">{downDistance}</span> }
                 </div>
