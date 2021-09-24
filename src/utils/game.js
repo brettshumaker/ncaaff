@@ -1,3 +1,11 @@
+/**
+ * External Dependencies
+ */
+import dayjs from 'dayjs'
+
+/**
+ * Internal Dependencies
+ */
 import { espnClient } from './clients'
 import { dateToESPNISO } from './utils'
 
@@ -23,15 +31,22 @@ function getNextOrCurrentGame( teamSchedule, fake = false ) {
         return fakeGetNextOrCurrentGame();
     }
 
-    const dateNow = dateToESPNISO()
-    return teamSchedule.find( game => {
-        const gameEpoch = Math.floor( Date.parse(game.date) / 1000 );
-        const nowEpoch = Math.floor(Date.parse(dateNow) / 1000)
+    // Let's try and keep this week's game around until 5am the following Sunday.
+    // Theoretically, this should change to the NEXT Sunday at 5am Sunday after
+    // the game happens and will, therefore, show the next week's game.
+    let sundayDayJS = dayjs().day(7).startOf('day').hour(5)
+    if ( 7 === dayjs().day() && 5 <= dayjs().hour() ) {
+        sundayDayJS = sundayDayJS.day(7).add(1,'day')
+    }
 
-        if ( gameEpoch >= nowEpoch - 60 * 60 * 24 ) {
+    return teamSchedule.filter( game => {
+        const gameEpoch = Math.floor( Date.parse(game.date) / 1000 );
+
+        // Basically checks to 
+        if ( gameEpoch <= sundayDayJS.unix() ) {
             return game
         }
-    })
+    }).slice(-1)[0]
 }
 
 function fakeGetNextOrCurrentGame() {
