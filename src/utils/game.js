@@ -1,3 +1,4 @@
+import { espnClient } from './clients'
 import { dateToESPNISO } from './utils'
 
 function isGameComplete(event) {
@@ -24,7 +25,10 @@ function getNextOrCurrentGame( teamSchedule, fake = false ) {
 
     const dateNow = dateToESPNISO()
     return teamSchedule.find( game => {
-        if ( game.date > dateNow ) {
+        const gameEpoch = Math.floor( Date.parse(game.date) / 1000 );
+        const nowEpoch = Math.floor(Date.parse(dateNow) / 1000)
+
+        if ( gameEpoch >= nowEpoch - 60 * 60 * 24 ) {
             return game
         }
     })
@@ -44,7 +48,6 @@ function gameShouldHaveStarted( gameDate ) {
 }
 
 function gameInProgress( gameID ) {
-    return false;
     return 'STATUS_IN_PROGRESS' === game.header.competitions.status.type.name
 }
 
@@ -61,14 +64,7 @@ function getLiveGameData( gameID, fake = false ) {
 async function getTeamSchedule( {teamID} ) {
     const thisYear = new Date( Date.now() ).getFullYear()
 
-    // Regular Season
-    const regularSeason = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/${teamID}/schedule?season=${thisYear}&seasontype=2`)
-        .then(response => {
-            if ( response.ok) {
-                return response.json()
-            }
-            throw response
-        })
+    const regularSeason = await espnClient(`teams/${teamID}/schedule?season=${thisYear}&seasontype=2`)
         .then(scheduleData => {
             return scheduleData.events
         })

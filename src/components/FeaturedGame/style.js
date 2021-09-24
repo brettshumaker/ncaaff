@@ -42,11 +42,19 @@ export const PrettyGameInfo = styled.div`
         }
 
         &.possession {
-            .has-possession::after {
-                content: url("data:image/svg+xml,%3Csvg viewBox='0 0 116 63' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M116 31.5C116 40.3155 90.0325 63 58 63C25.9675 63 0 40.208 0 31.5C0 22.792 25.9675 0 58 0C90.0325 0 116 22.6845 116 31.5Z' fill='%23764519'/%3E%3C/svg%3E%0A");
-                position: absolute;
-                right: -20px;
-                width: 16px;
+            .has-possession {
+
+                &::after {
+                    content: url("data:image/svg+xml,%3Csvg viewBox='0 0 116 63' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M116 31.5C116 40.3155 90.0325 63 58 63C25.9675 63 0 40.208 0 31.5C0 22.792 25.9675 0 58 0C90.0325 0 116 22.6845 116 31.5Z' fill='%23764519'/%3E%3C/svg%3E%0A");
+                    position: absolute;
+                    right: -20px;
+                    width: 16px;
+                }
+
+                &.home::after {
+                    right: 0;
+                    left: -20px;
+                }
             }
         }
 
@@ -103,12 +111,18 @@ export const PrettyGameInfo = styled.div`
                     grid-column-start: 4;
                 }
 
-                .has-possession::after {
-                    position: inherit;
-                    right: 0px;
-                    width: 10px;
-                    grid-row-start: 1;
-                    grid-column-start: 1;
+                .has-possession {
+                    &.home, &.away {
+                        &::after {
+                            position: inherit;
+                            right: 0px;
+                            left: 0px;
+                            top: -3px;
+                            width: 10px;
+                            grid-row-start: 1;
+                            grid-column-start: 1;
+                        }
+                    }
                 }
             }
 
@@ -314,10 +328,17 @@ const scrolllastplay = (left) => keyframes`
     }
 `
 
+function getAnimationDuration( scrollAmount ) {
+    if ( 0 === scrollAmount ) {
+        return '0s';
+    }
+    return Math.floor( ( scrollAmount * -.04 ) + 3 ).toString() + 's'
+}
+
 export const ScrolledOverflowContainer = styled.p`
     @media screen and (max-width: 550px) {
         position: relative;
-        animation: 8s infinite linear ${props => scrolllastplay(props.scrollAmount)};
+        animation:  ${props => getAnimationDuration(props.scrollAmount)} infinite linear ${props => scrolllastplay(props.scrollAmount)};
         animation-delay: 1.5s;
     }
 `

@@ -60,7 +60,9 @@ const CurrentGame = ( { gameData, basicGameData } ) => {
     const [ scrollingPlayScrollLeft, setScrollingPlayScrollLeft ] = useState(0);
 
     // console.log('rendering CurrentGame', {gameData, basicGameData})
-    const {mediaDisplayName, homeTeam, awayTeam, venue, gamecastLink} = basicGameData;
+    const {mediaDisplayName, venue, gamecastLink} = basicGameData;
+    const homeTeam = gameData.header.competitions[0].competitors.find( team => team.homeAway === 'home')
+    const awayTeam = gameData.header.competitions[0].competitors.find( team => team.homeAway === 'away')
     const shortDetail = gameData.header.competitions[0].status.type.shortDetail;
     const someoneHasPossession = awayTeam.possession || homeTeam.possession;
     const downDistance = gameData.drives.current.plays.slice(-1)[0]?.end?.downDistanceText
@@ -68,7 +70,7 @@ const CurrentGame = ( { gameData, basicGameData } ) => {
     // console.log(gameData.drives.current.plays.slice(-1)[0], downDistance !== undefined)
 
     const autoScrollPlay = useRef(null)
-    
+
     useEffect( () => {
         if ( autoScrollPlay.current ) {
             const scrollingContent = autoScrollPlay.current.firstChild;
@@ -118,8 +120,7 @@ const FeaturedGame = ( {game: nextGameData} ) => {
     const[ preliminaryGameData, setPreliminaryGameData] = useState();
     const[ inProgressGameData, setInProgressGameData] = useState();
     const{run, data, isSuccess, isLoading, isError, error} = useAsync();
-    
-    
+
     useEffect( () => {
         const competition = nextGameData.header ? nextGameData.header.competitions[0] : nextGameData.competitions[0]
         const mediaDisplayName = competition.broadcasts[0]?.media.shortName
