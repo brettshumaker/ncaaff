@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom'
 
 import SingleUser from 'components/SingleUser'
-import { getUser } from 'utils'
+import { getUser } from 'utils/utils'
 
 const Users = () => {
     const { id } = useParams()

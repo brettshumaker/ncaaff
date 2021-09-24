@@ -1,12 +1,24 @@
-import { useState, useEffect } from 'react'
+/**
+ * External Dependencies
+ */
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { BsGearFill } from 'react-icons/bs'
 
+/**
+ * Internal Dependencies
+ */
 import { LeagueUserRow } from 'components/SingleLeague'
+import { useAuth } from 'context/auth-context'
+import { getUserDisplayName } from 'utils/utils'
+import { SingleUserPage, SettingsLink } from './style'
 
 const SingleUser = ( { user }) => {
+    // TODO - check this out
     const [userData, setUserData] = useState( user )
+    const {user: loggedInUser} = useAuth();
 
-    const displayName = user.name.display !== '' ? user.name.display : `${user.name.first ?? ''} ${user.name.last ?? ''}`.trim()
+    const isThisUser = loggedInUser.id === user.id
 
     const UserLeagues = () => {
         return(
@@ -30,11 +42,14 @@ const SingleUser = ( { user }) => {
     }
 
     return (
-        <>
-            <h1>{displayName}</h1>
+        <SingleUserPage>
+            <h1>{getUserDisplayName({user})}</h1>
+            {
+                isThisUser ? <SettingsLink><BsGearFill /></SettingsLink> : ''
+            }
             <h2>Leagues</h2>
             <UserLeagues />
-        </>
+        </SingleUserPage>
     )
 }
 
