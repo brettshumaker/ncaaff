@@ -65,8 +65,8 @@ const CurrentGame = ( { gameData, basicGameData } ) => {
     const awayTeam = gameData.header.competitions[0].competitors.find( team => team.homeAway === 'away')
     const shortDetail = gameData.header.competitions[0].status.type.shortDetail;
     const someoneHasPossession = awayTeam.possession || homeTeam.possession;
-    const downDistance = gameData.drives.current.plays.slice(-1)[0]?.end?.downDistanceText
-    const lastPlay = gameData.drives.current.plays.slice(-1)[0].text;
+    const downDistance = gameData.drives.current?.plays.slice(-1)[0]?.end?.downDistanceText
+    const lastPlay = gameData.drives.current?.plays.slice(-1)[0].text;
     // console.log(gameData.drives.current.plays.slice(-1)[0], downDistance !== undefined)
 
     const autoScrollPlay = useRef(null)
