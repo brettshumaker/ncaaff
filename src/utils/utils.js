@@ -300,6 +300,40 @@ const slugifyText = (text) => {
     return text.replace(/\s+/g, '-').toLowerCase()
 }
 
+const shortenConferenceName = ( text ) => {
+    const conferences = [
+        { name: "Atlantic Coast Conference", shortName: "ACC" },
+        { name: "American Athletic Conference", shortName: "AAC" },
+        { name: "Big 12", shortName: "Big 12" },
+        { name: "Big Ten", shortName: "B10" },
+        { name: "Conference USA", shortName: "C-USA" },
+        { name: "Mid-American Conference", shortName: "MAC" },
+        { name: "Mountain West Conference", shortName: "Mountain West" },
+        { name: "Pac-12", shortName: "Pac-12" },
+        { name: "Southeastern Conference", shortName: "SEC" },
+        { name: "Sun Belt", shortName: "Sun Belt" },
+    ];
+
+    const conferenceToReplace = conferences.filter( conference => {
+        const nameToCheck = conference.name.toLowerCase();
+        const stringToCheck = text.toLowerCase();
+        return stringToCheck.includes( nameToCheck );
+    });
+    
+    const conference = conferenceToReplace[0];
+    
+    // replace as-is
+    text = text.replace( conference.name, conference.shortName )
+    
+    // replace uppercase
+    text = text.replace( conference.name.toUpperCase(), conference.shortName.toUpperCase() )
+
+    // replace lowercase
+    text = text.replace( conference.name.toLowerCase(), conference.shortName.toLowerCase() )
+
+    return text;
+}
+
 function useSafeDispatch(dispatch) {
     const mounted = React.useRef(false)
     React.useLayoutEffect(() => {
@@ -377,4 +411,4 @@ function useAsync(initialState) {
   }
 }
 
-export {getUser, getAllUsers, sortUsersByPoints, getLeague, getAllTeamData, getTeamData, getUserDisplayName, getTeamRecord, getTeamWins, useLocalStorage, getTotalRosterPoints, getUserLeagueRoster, getRankString, getRankedLeagueUsers, slugifyText, useAsync, dateToESPNISO}
+export {getUser, getAllUsers, sortUsersByPoints, getLeague, getAllTeamData, getTeamData, getUserDisplayName, getTeamRecord, getTeamWins, useLocalStorage, getTotalRosterPoints, getUserLeagueRoster, getRankString, getRankedLeagueUsers, slugifyText, shortenConferenceName, useAsync, dateToESPNISO}
