@@ -9,6 +9,39 @@ export const PrettyGameInfo = styled.div`
     padding: 1em 1em .5em;
     border-radius: 10px;
 
+    &.has-headline {
+        grid-template-rows: max-content 1fr;
+        padding: 0 0 .5em;
+
+        .game-headline {
+
+            &:not(.in-gdtc) {
+                grid-column: 1/-1;
+                margin: 0 0 15px;
+                padding: 10px 1.5em;
+                background: #fafafa;
+                border-top: 1px solid #f1f2f3;
+                border-bottom: 1px solid #f1f2f3;
+                border-radius: 10px 10px 0 0;
+
+                @media screen and ( max-width: 550px ) {
+                    display: none;
+                }
+
+                p {
+                    text-align: center;
+                    color: #6c6d6f;
+                    font-size: 12px;
+                }
+            }
+
+            p {
+                margin: 0;
+                letter-spacing: 1px;
+            }
+        }
+    }
+
     &.in-progress-game {
 
         .away {
@@ -220,11 +253,11 @@ export const PrettyGameInfo = styled.div`
             grid-template-rows: 1fr;
             grid-template-columns: max-content max-content 1fr;
             grid-column-gap: 8px;
-            margin: 0 0 15px;
             align-items: center;
             grid-column-start: 1;
             grid-column-end: 4;
             grid-row-start: 1;
+            margin: 0 0 15px;
             padding: 10px 1.5em;
             background: #fafafa;
             border-top: 1px solid #f1f2f3;
@@ -263,6 +296,31 @@ export const PrettyGameInfo = styled.div`
             @media screen and (max-width: 550px) {
                 grid-column-start: 2;
                 grid-row-start: 1;
+            }
+        }
+    }
+
+    &.has-headline {
+        .game-date-time-channel {
+            .headline {
+                display: none;
+            }
+            @media screen and (max-width: 550px) {
+                grid-template-columns: max-content 1fr max-content max-content;
+
+                .channel {
+                    grid-column-start: 4;
+                }
+
+                .time {
+                    grid-column-start: 3;
+                }
+
+                .headline {
+                    display: block;
+                    grid-row-start: 1;
+                    grid-column-start: 2;
+                }
             }
         }
     }
