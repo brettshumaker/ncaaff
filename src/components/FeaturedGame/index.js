@@ -7,7 +7,7 @@ import { useEffect, useState, useRef } from 'react'
  * Internal Dependencies
  */
 import ESPN from 'images/ESPN_wordmark.svg'
-import { useAsync } from 'utils/utils'
+import { useAsync, shortenConferenceName } from 'utils/utils'
 import { getGameTime, gameShouldHaveStarted, getLiveGameData } from 'utils/game'
 import { PrettyGameInfo, ScrolledOverflowContainer } from './style'
 
@@ -19,12 +19,25 @@ const TeamGameLogo = ({team}) => {
     )
 }
 
+const GameHeadline = ( { gameNotes, className = '' } ) => {
+    if ( ! gameNotes ) {
+        return '';
+    }
+
+    return (
+        <div className={`game-headline ${ className }`}>
+            <p>{ shortenConferenceName( gameNotes[0].headline ) }</p>
+        </div>
+    )
+}
+
 const FutureGame = ( {gameData} ) => {
     const {mediaDisplayName, homeTeam, awayTeam, venue, gamecastLink, gameTimeData} = gameData
 
     return(
         <div className="next-game">
-            <PrettyGameInfo className="prettyGameInfo future-game">
+            <PrettyGameInfo className={ `prettyGameInfo future-game ${ gameData?.notes?.length > 0 && gameData.notes[0].headline ? 'has-headline' : '' }` }>
+                <GameHeadline gameNotes={ gameData?.notes } />
                 <div className="away">
                     <span className="team-name"><span className="rank">{awayTeam.rank}</span> {awayTeam.team.displayName}</span>
                     <TeamGameLogo team={awayTeam} />
@@ -33,6 +46,7 @@ const FutureGame = ( {gameData} ) => {
                     <span className="channel">{mediaDisplayName ? mediaDisplayName : ''}</span>
                     <span className="date">{gameTimeData.dayMonth}</span>
                     <span className="time">{gameTimeData.time}</span>
+                    <span className="headline"><GameHeadline gameNotes={ gameData?.notes } className="in-gdtc" /></span>
                 </div>
                 <div className="home">
                     <span className="team-name"><span className="rank">{homeTeam.rank}</span>{homeTeam.team.displayName}</span>
@@ -86,6 +100,7 @@ const CurrentGame = ( { gameData, basicGameData } ) => {
     return(
         <div className="next-game">
             <PrettyGameInfo className={`prettyGameInfo in-progress-game${someoneHasPossession ? ' possession' : ''}`}>
+                <GameHeadline gameNotes={ gameData?.notes } />
                 <div className={`away${awayTeam.possession ? ' has-possession' : ''}`}>
                     <span className="team-name"><span className="rank">{awayTeam.rank}</span> {awayTeam.team.displayName}</span>
                     <TeamGameLogo team={awayTeam} />
