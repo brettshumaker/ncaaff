@@ -8,7 +8,7 @@ import { useEffect, useState, useRef } from 'react'
  */
 import ESPN from 'images/ESPN_wordmark.svg'
 import { useAsync, shortenConferenceName } from 'utils/utils'
-import { getGameTime, gameShouldHaveStarted, getLiveGameData } from 'utils/game'
+import { getGameTime, gameShouldHaveStarted, getLiveGameData, getGameHeadline } from 'utils/game'
 import { PrettyGameInfo, ScrolledOverflowContainer } from './style'
 
 const TeamGameLogo = ({team}) => {
@@ -19,14 +19,16 @@ const TeamGameLogo = ({team}) => {
     )
 }
 
-const GameHeadline = ( { gameNotes, className = '' } ) => {
-    if ( ! gameNotes ) {
+const GameHeadline = ( { gameData, className = '' } ) => {
+    const headline = getGameHeadline( gameData );
+
+    if ( '' === headline ) {
         return '';
     }
 
     return (
         <div className={`game-headline ${ className }`}>
-            <p>{ shortenConferenceName( gameNotes[0].headline ) }</p>
+            <p>{ shortenConferenceName( headline ) }</p>
         </div>
     )
 }
@@ -36,8 +38,8 @@ const FutureGame = ( {gameData} ) => {
 
     return(
         <div className="next-game">
-            <PrettyGameInfo className={ `prettyGameInfo future-game ${ gameData?.notes?.length > 0 && gameData.notes[0].headline ? 'has-headline' : '' }` }>
-                <GameHeadline gameNotes={ gameData?.notes } />
+            <PrettyGameInfo className={ `prettyGameInfo future-game ${ getGameHeadline( gameData ) !== '' ? 'has-headline' : '' }` }>
+                <GameHeadline gameData={ gameData } />
                 <div className="away">
                     <span className="team-name"><span className="rank">{awayTeam.rank}</span> {awayTeam.team.displayName}</span>
                     <TeamGameLogo team={awayTeam} />
@@ -73,7 +75,7 @@ const FutureGame = ( {gameData} ) => {
 const CurrentGame = ( { gameData, basicGameData } ) => {
     const [ scrollingPlayScrollLeft, setScrollingPlayScrollLeft ] = useState(0);
 
-    // console.log('rendering CurrentGame', {gameData, basicGameData})
+    console.log('rendering CurrentGame', {gameData, basicGameData})
     const {mediaDisplayName, venue, gamecastLink} = basicGameData;
     const homeTeam = gameData.header.competitions[0].competitors.find( team => team.homeAway === 'home')
     const awayTeam = gameData.header.competitions[0].competitors.find( team => team.homeAway === 'away')
@@ -99,8 +101,8 @@ const CurrentGame = ( { gameData, basicGameData } ) => {
 
     return(
         <div className="next-game">
-            <PrettyGameInfo className={`prettyGameInfo in-progress-game${someoneHasPossession ? ' possession' : ''}`}>
-                <GameHeadline gameNotes={ gameData?.notes } />
+            <PrettyGameInfo className={`prettyGameInfo in-progress-game ${someoneHasPossession ? 'possession' : ''} ${ getGameHeadline( gameData ) !== '' ? 'has-headline' : '' }`}>
+                <GameHeadline gameData={ gameData } />
                 <div className={`away${awayTeam.possession ? ' has-possession' : ''}`}>
                     <span className="team-name"><span className="rank">{awayTeam.rank}</span> {awayTeam.team.displayName}</span>
                     <TeamGameLogo team={awayTeam} />
@@ -162,6 +164,7 @@ const FeaturedGame = ( {game: nextGameData} ) => {
             venue,
             gamecastLink,
             gameTimeData,
+            notes: competition.notes,
         } );
 
         setGameInProgress( gameShouldHaveStarted( nextGameData.date ) )
