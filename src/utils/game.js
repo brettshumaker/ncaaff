@@ -31,22 +31,54 @@ function getNextOrCurrentGame( teamSchedule, fake = false ) {
         return fakeGetNextOrCurrentGame();
     }
 
-    // Let's try and keep this week's game around until 5am the following Sunday.
-    // Theoretically, this should change to the NEXT Sunday at 5am Sunday after
-    // the game happens and will, therefore, show the next week's game.
-    let sundayDayJS = dayjs().day(7).startOf('day').hour(5)
-    if ( 7 === dayjs().day() && 5 <= dayjs().hour() ) {
-        sundayDayJS = sundayDayJS.day(7).add(1,'day')
+    // Get the last completed game
+    const lastCompleted = teamSchedule.reduce( ( theLast, game ) => {
+        if ( game.competitions[0].status.type.completed ) {
+            return game;
+        }
+        return theLast
+    }, false );
+
+    // Get the next scheduled game
+    const nextScheduled = teamSchedule.reduce( ( theNext, game ) => {
+        if ( ! theNext && ! game.competitions[0].status.type.completed ) {
+            return game;
+        }
+        return theNext
+    }, false );
+
+    // If no last completed, show the next scheduled
+    if ( ! lastCompleted && nextScheduled ) {
+        return nextScheduled;
     }
 
-    return teamSchedule.filter( game => {
-        const gameEpoch = Math.floor( Date.parse(game.date) / 1000 );
+    // If no next scheduled, show the last completed
+    if ( ! nextScheduled && lastCompleted ) {
+        return lastCompleted;
+    }
 
-        // Basically checks to 
-        if ( gameEpoch <= sundayDayJS.unix() ) {
-            return game
-        }
-    }).slice(-1)[0]
+    // If neither exist, show no games scheduled. Probably between seasons
+    if ( ! lastCompleted && ! nextScheduled ) {
+        // Return something else here
+        return false;
+    }
+
+    // Now we should have both a last completed and a next scheduled - decide which to show.
+    // Set up some date values to compare
+    const currentDate = dayjs();
+    const lastCompletedDate = dayjs.unix( Math.floor( Date.parse(lastCompleted.date) / 1000 ) )
+
+    // Sunday noon after last completed:
+    const sundayNoonAfterLastCompleted = lastCompletedDate.day(7).startOf('day').hour(12);
+
+    // If the epoch of the next sunday after the game at noon ET is less than the current time
+    if ( sundayNoonAfterLastCompleted.unix() < currentDate.unix() ) {
+        // Show next scheduled
+        return nextScheduled
+    } else {
+        // Else show last completed
+        return lastCompleted
+    }
 }
 
 function fakeGetNextOrCurrentGame() {
