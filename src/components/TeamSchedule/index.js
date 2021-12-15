@@ -39,16 +39,14 @@ const TeamSchedule = ({teamID}) => {
 
     const NextGame = () => {
         if ( nextGameLoading ) {
-            return (
-                <>
-                    <p>Loading next game...</p>
-                </>
-            )
+            return <p>Loading next game...</p>
         }
 
-        return (
-            <FeaturedGame game={nextGame} />
-        )
+        if ( ! nextGame ) {
+            return ''
+        }
+
+        return <FeaturedGame game={nextGame} />
     }
 
     const FullSchedule = () => {
