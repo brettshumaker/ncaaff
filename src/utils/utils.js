@@ -321,6 +321,11 @@ const shortenConferenceName = ( text ) => {
     });
     
     const conference = conferenceToReplace[0];
+
+    if ( ! conference ) {
+        // Nothing to replace.
+        return text;
+    }
     
     // replace as-is
     text = text.replace( conference.name, conference.shortName )
@@ -411,4 +416,23 @@ function useAsync(initialState) {
   }
 }
 
-export {getUser, getAllUsers, sortUsersByPoints, getLeague, getAllTeamData, getTeamData, getUserDisplayName, getTeamRecord, getTeamWins, useLocalStorage, getTotalRosterPoints, getUserLeagueRoster, getRankString, getRankedLeagueUsers, slugifyText, shortenConferenceName, useAsync, dateToESPNISO}
+export {
+    getUser,
+    getAllUsers,
+    sortUsersByPoints,
+    getLeague,
+    getAllTeamData,
+    getTeamData,
+    getUserDisplayName,
+    getTeamRecord,
+    getTeamWins,
+    useLocalStorage,
+    getTotalRosterPoints,
+    getUserLeagueRoster,
+    getRankString, 
+    getRankedLeagueUsers,
+    slugifyText,
+    shortenConferenceName,
+    useAsync,
+    dateToESPNISO,
+}

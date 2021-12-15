@@ -66,6 +66,18 @@ function gameInProgress( gameID ) {
     return 'STATUS_IN_PROGRESS' === game.header.competitions.status.type.name
 }
 
+const getGameHeadline = ( gameData ) => {
+    if ( gameData?.notes?.length > 0 && gameData.notes[0].headline ) {
+        return gameData.notes[0].headline
+    }
+
+    if ( gameData?.header?.gameNote ) {
+        return gameData.header.gameNote
+    }
+
+    return '';
+}
+
 function getLiveGameData( gameID, fake = false ) {
     if ( fake ) {
         return new Promise( resolve => {
@@ -99,4 +111,13 @@ async function getTeamSchedule( {teamID} ) {
     return [...regularSeason, ...postSeason]
 }
 
-export { isGameComplete, getGameTime, getNextOrCurrentGame, getTeamSchedule, gameInProgress, gameShouldHaveStarted, getLiveGameData }
+export {
+    isGameComplete,
+    getGameTime,
+    getNextOrCurrentGame,
+    getTeamSchedule,
+    gameInProgress,
+    gameShouldHaveStarted,
+    getLiveGameData,
+    getGameHeadline,
+}
