@@ -1,4 +1,85 @@
 import * as React from 'react'
+import { getGameHeadline, getTeamSchedule } from './game'
+
+const conferences = [
+    {
+        id: "1",
+        name: "Atlantic Coast Conference",
+        shortName: "ACC",
+        hasChampionship: true,
+        hasDivisions: true,
+    },
+    {
+        id: "151",
+        name: "American Athletic Conference",
+        shortName: "AAC",
+        hasChampionship: true,
+        hasDivisions: false,
+    },
+    {
+        id: "4",
+        name: "Big 12",
+        shortName: "Big 12",
+        hasChampionship: true,
+        hasDivisions: false,
+    },
+    {
+        id: "5",
+        name: "Big Ten",
+        shortName: "B10",
+        hasChampionship: true,
+        hasDivisions: true,
+    },
+    {
+        id: "12",
+        name: "Conference USA",
+        shortName: "C-USA",
+        hasChampionship: true,
+        hasDivisions: true,
+    },
+    {
+        id: "18",
+        name: "FBS Independent",
+        shortName: "Independent",
+        hasChampionship: false,
+        hasDivisions: false,
+    },
+    {
+        id: "15",
+        name: "Mid-American Conference",
+        shortName: "MAC",
+        hasChampionship: true,
+        hasDivisions: true,
+    },
+    {
+        id: "17",
+        name: "Mountain West Conference",
+        shortName: "Mountain West",
+        hasChampionship: true,
+        hasDivisions: true,
+    },
+    {
+        id: "9",
+        name: "Pac-12",
+        shortName: "Pac-12",
+        hasChampionship: true,
+        hasDivisions: true,
+    },
+    {
+        id: "8",
+        name: "Southeastern Conference",
+        shortName: "SEC",
+        hasChampionship: true,
+        hasDivisions: true,
+    },
+    {
+        id: "37",
+        name: "Sun Belt",
+        shortName: "Sun Belt",
+        hasChampionship: true,
+        hasDivisions: true,
+    },
+];
 
 const dataExpirations = {
     'team': 60 * 60 * 2, // 2 hours
@@ -92,15 +173,84 @@ const getTeamWins = team => {
     return parseInt( getTeamRecord(team).split('-')[0] )
 }
 
+const getTeamBonusPoints = async team => {
+    // console.log(team)
+    // Get team's schedule
+    const schedule = await getTeamSchedule( { teamID: team.id } )
+
+    // Setup some variables
+    let bonusPoints = 0
+
+    // Loop through games
+    schedule.map( game => {
+        // Get the game headline
+        const headline = getGameHeadline( game?.competitions[0] );
+        
+        // Look for conference championship game in notes
+        if ( '' !== headline && headline?.toLowerCase().indexOf( 'championship' , 0 ) >= 0 ) {
+            // console.log( `${team.displayName} in championship: ${headline}`)
+            // Get the conference for this championship game.
+            const thisConference = conferences.find( conference => {
+                if ( conference.id === team.groups.id || ( ! team.groups.isConference && conference.id === team.groups.parent.id ) ) {
+                    return conference;
+                }
+            })
+
+            // If this team is in a conference that has divisions and they were in
+            // a conference champ game, add division winner bonus points (+1)
+            if ( thisConference.hasDivisions ) {
+                // console.log( 'awarding division champ bonus' )
+                bonusPoints += 1;
+            }
+            
+            // If this team was in a conference champ game and won, add conf champ bonus points (+2)
+            const winner = game.competitions[0].competitors.find( team => team?.winner )
+            if ( winner?.id === team.id ) {
+                // console.log( `awarding conf champ bonus for ${team.id}` )
+                bonusPoints += 1;
+            }
+            // console.log(thisConference, winner.id, game, team)
+        }
+
+        // Look for CFP semifinals in notes
+        if ( '' !== headline && headline?.toLowerCase().indexOf( 'semifinal' , 0 ) >= 0 ) {
+            // console.log( `${team.displayName} in CFP: ${headline}`)
+            // If this team was in a semifinal game, add playoff points(+2)
+            // console.log( 'awarding CFP appearance bonus' )
+            bonusPoints += 2;
+
+            const winner = game.competitions[0].competitors.find( team => team?.winner )
+            if ( winner?.id === team.id ) {
+                // console.log( `awarding CFP win bonus for ${team.id}` )
+                bonusPoints += 2;
+            }
+        }
+
+        if ( '' !== headline && headline?.toLowerCase().indexOf( 'final' , 0 ) >= 0 ) {
+            // console.log( `${team.displayName} in CFP: ${headline}`)
+
+            // If this team won the final cfp game, add nat champ points(+4)
+            const winner = game.competitions[0].competitors.find( team => team?.winner )
+            if ( winner?.id === team.id ) {
+                // console.log( `awarding CFP national championship bonus for ${team.id}` )
+                bonusPoints += 3;
+            }
+        }
+    });
+
+    return bonusPoints;
+}
+
 const getTotalRosterPoints = (teams) => {
     const rosterPoints = teams.reduce( async (totalPoints, team) => {
-        let winsToAdd = 0;
+        let pointsToAdd = 0;
         await getTeamData(team)
-        .then(team => {
-            winsToAdd += getTeamWins(team)
+        .then( async team => {
+            pointsToAdd += getTeamWins(team)
+            pointsToAdd += await getTeamBonusPoints(team)
         })
 
-        return await totalPoints + winsToAdd
+        return await totalPoints + pointsToAdd 
     },0)
 
     return rosterPoints
@@ -301,19 +451,6 @@ const slugifyText = (text) => {
 }
 
 const shortenConferenceName = ( text ) => {
-    const conferences = [
-        { name: "Atlantic Coast Conference", shortName: "ACC" },
-        { name: "American Athletic Conference", shortName: "AAC" },
-        { name: "Big 12", shortName: "Big 12" },
-        { name: "Big Ten", shortName: "B10" },
-        { name: "Conference USA", shortName: "C-USA" },
-        { name: "Mid-American Conference", shortName: "MAC" },
-        { name: "Mountain West Conference", shortName: "Mountain West" },
-        { name: "Pac-12", shortName: "Pac-12" },
-        { name: "Southeastern Conference", shortName: "SEC" },
-        { name: "Sun Belt", shortName: "Sun Belt" },
-    ];
-
     const conferenceToReplace = conferences.filter( conference => {
         const nameToCheck = conference.name.toLowerCase();
         const stringToCheck = text.toLowerCase();
@@ -338,6 +475,8 @@ const shortenConferenceName = ( text ) => {
 
     return text;
 }
+
+
 
 function useSafeDispatch(dispatch) {
     const mounted = React.useRef(false)
