@@ -75,7 +75,7 @@ const FutureGame = ( {gameData} ) => {
 const CurrentGame = ( { gameData, basicGameData } ) => {
     const [ scrollingPlayScrollLeft, setScrollingPlayScrollLeft ] = useState(0);
 
-    console.log('rendering CurrentGame', {gameData, basicGameData})
+    // console.log('rendering CurrentGame', {gameData, basicGameData})
     const {mediaDisplayName, venue, gamecastLink} = basicGameData;
     const homeTeam = gameData.header.competitions[0].competitors.find( team => team.homeAway === 'home')
     const awayTeam = gameData.header.competitions[0].competitors.find( team => team.homeAway === 'away')
