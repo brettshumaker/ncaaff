@@ -121,7 +121,8 @@ function getLiveGameData( gameID, fake = false ) {
 }
 
 async function getTeamSchedule( {teamID} ) {
-    const thisYear = new Date( Date.now() ).getFullYear()
+     // If it's February or later, use this year, otherwise use the previous year
+     const thisYear = dayjs().month() + 1 > 1 ? dayjs().year() : dayjs().year() - 1;
 
     const regularSeason = await espnClient(`teams/${teamID}/schedule?season=${thisYear}&seasontype=2`)
         .then(scheduleData => {
